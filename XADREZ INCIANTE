@@ -1,0 +1,107 @@
+# XADREZ - MOVIMENTAÇÃO BÁSICA (VERSÃO ONLINE)
+class Xadrez:
+    def __init__(self):
+        self.tabuleiro = self.criar_tabuleiro()
+        self.turno = 'branco'
+        
+    def criar_tabuleiro(self):
+        # Tabuleiro inicial - peças Unicode
+        return [
+            ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
+            ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
+            ['·', '·', '·', '·', '·', '·', '·', '·'],
+            ['·', '·', '·', '·', '·', '·', '·', '·'],
+            ['·', '·', '·', '·', '·', '·', '·', '·'],
+            ['·', '·', '·', '·', '·', '·', '·', '·'],
+            ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
+            ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']
+        ]
+    
+    def mostrar_tabuleiro(self, selecao=None):
+        # Simula limpar tela com quebras de linha
+        print("\n" * 10)
+        print("    A B C D E F G H")
+        print("   ╔═════════════════╗")
+        
+        for i, linha in enumerate(self.tabuleiro):
+            print(f" {8-i} ║", end=" ")
+            for j, peca in enumerate(linha):
+                if selecao and selecao == (i, j):
+                    print(f"[{peca}]", end="")  # Destacar com colchetes
+                else:
+                    print(peca, end=" ")
+            print("║")
+        
+        print("   ╚═════════════════╝")
+        print(f"Turno: {self.turno}")
+    
+    def converter_posicao(self, pos):
+        # Converte "A1" para coordenadas (7,0)
+        coluna = ord(pos[0].upper()) - ord('A')
+        linha = 8 - int(pos[1])
+        return linha, coluna
+    
+    def movimento_valido(self, origem, destino):
+        linha_orig, col_orig = origem
+        linha_dest, col_dest = destino
+        
+        peca = self.tabuleiro[linha_orig][col_orig]
+        
+        # Movimentos básicos por tipo de peça
+        if peca == '♙':  # Peão branco
+            return (linha_dest == linha_orig - 1 and col_dest == col_orig)
+        elif peca == '♟':  # Peão preto
+            return (linha_dest == linha_orig + 1 and col_dest == col_orig)
+        elif peca in ['♖', '♜']:  # Torres
+            return (linha_orig == linha_dest or col_orig == col_dest)
+        
+        return False
+    
+    def mover_peca(self, origem, destino):
+        if self.movimento_valido(origem, destino):
+            linha_orig, col_orig = origem
+            linha_dest, col_dest = destino
+            
+            # Move a peça
+            self.tabuleiro[linha_dest][col_dest] = self.tabuleiro[linha_orig][col_orig]
+            self.tabuleiro[linha_orig][col_orig] = '·'
+            
+            # Alterna turno
+            self.turno = 'preto' if self.turno == 'branco' else 'branco'
+            return True
+        return False
+    
+    def jogar(self):
+        print("♟️ XADREZ - SISTEMA DE MOVIMENTAÇÃO")
+        print("Como jogar:")
+        print("1. Digite a posição da peça (ex: A2)")
+        print("2. Digite para onde mover (ex: A4)")
+        print("3. Digite 'sair' para encerrar")
+        print("-" * 40)
+        
+        while True:
+            self.mostrar_tabuleiro()
+            
+            try:
+                comando = input("\nPosição da peça: ").strip()
+                if comando.lower() == 'sair':
+                    break
+                
+                origem = self.converter_posicao(comando)
+                self.mostrar_tabuleiro(selecao=origem)
+                
+                destino = input("Mover para: ").strip()
+                destino = self.converter_posicao(destino)
+                
+                if self.mover_peca(origem, destino):
+                    print("Movimento realizado!")
+                else:
+                    print("Movimento inválido!")
+                    
+            except Exception as e:
+                print(f"Erro: Use formato como A1, B2, etc")
+
+# Iniciar jogo
+if __name__ == "__main__":
+    jogo = Xadrez()
+    jogo.jogar()
