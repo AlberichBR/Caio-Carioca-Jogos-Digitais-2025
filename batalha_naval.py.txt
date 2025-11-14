@@ -1,52 +1,50 @@
-# BATALHA NAVAL - VERSÃO RETRÔ
-import os
+# BATALHA NAVAL - VERSÃO RETRÔ (COMPATÍVEL ONLINE)
 
-# Cores no terminal (simula console antigo)
+# Cores no terminal (simula console antigo) - versão simplificada
 class Cores:
-    AZUL = '\033[94m'    # Água
-    VERDE = '\033[92m'   # Navio
-    VERMELHO = '\033[91m' # Acerto
-    AMARELO = '\033[93m'  # Título
-    CYAN = '\033[96m'    # Coordenadas
-    RESET = '\033[0m'    # Reset
+    AZUL = ''    # Removemos cores por compatibilidade
+    VERDE = ''   
+    VERMELHO = '' 
+    AMARELO = ''  
+    CYAN = ''    
+    RESET = ''    
 
 def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    # Simula limpar tela com quebras de linha
+    print("\n" * 20)
 
 def mostrar_titulo():
-    print(f"{Cores.AMARELO}")
     print("╔══════════════════════════════╗")
     print("║      BATALHA NAVAL RETRÔ     ║")
     print("║     🎮 MEGA DRIVE STYLE     ║")
     print("╚══════════════════════════════╝")
-    print(f"{Cores.RESET}")
 
 def mostrar_tabuleiro(tabuleiro, revelar_navios=False):
-    print(f"\n{Cores.CYAN}   1 2 3{Cores.RESET}")
+    print("\n    1 2 3")
     letras = ['A', 'B', 'C']
     
     for i, linha in enumerate(tabuleiro):
-        print(f"{Cores.CYAN}{letras[i]}  {Cores.RESET}", end="")
+        print(f"{letras[i]}   ", end="")
         for celula in linha:
             if celula == '~':  # Água
-                print(f"{Cores.AZUL}~ {Cores.RESET}", end="")
+                print(f"~ ", end="")
             elif celula == 'N':  # Navio
                 if revelar_navios:
-                    print(f"{Cores.VERDE}█ {Cores.RESET}", end="")
+                    print(f"█ ", end="")  # Navio revelado
                 else:
-                    print(f"{Cores.AZUL}~ {Cores.RESET}", end="")
+                    print(f"~ ", end="")  # Navio escondido
             elif celula == 'X':  # Acerto
-                print(f"{Cores.VERMELHO}💥{Cores.RESET}", end="")
+                print(f"💥", end="")
             elif celula == 'O':  # Erro
-                print(f"{Cores.AZUL}• {Cores.RESET}", end="")
+                print(f"• ", end="")
         print()
 
 def main():
     limpar_tela()
     mostrar_titulo()
     
-    print(f"\n{Cores.VERDE}🎯 Objetivo: Encontre o navio secreto!")
-    print("💡 Dica: Tente B2 para teste{Cores.RESET}")
+    print("\n🎯 Objetivo: Encontre o navio secreto!")
+    print("💡 Dica: Tente B2 para teste")
     
     # Tabuleiro com navio em B2
     tabuleiro = [
@@ -60,14 +58,14 @@ def main():
     # Loop do jogo
     while True:
         try:
-            jogada = input(f"\n{Cores.CYAN}🎮 Sua jogada (A1, B2, C3): {Cores.RESET}").upper()
+            jogada = input("\n🎮 Sua jogada (A1, B2, C3): ").upper()
             
             if jogada == "SAIR":
-                print(f"{Cores.AMARELO}👋 Até a próxima!{Cores.RESET}")
+                print("👋 Até a próxima!")
                 break
                 
             if len(jogada) != 2 or jogada[0] not in "ABC" or jogada[1] not in "123":
-                print(f"{Cores.VERMELHO}❌ Jogada inválida! Use A1, B2, C3{Cores.RESET}")
+                print("❌ Jogada inválida! Use A1, B2, C3")
                 continue
             
             # Converter jogada
@@ -76,7 +74,7 @@ def main():
             
             # Verificar se já jogou aí
             if tabuleiro[linha][coluna] in ['X', 'O']:
-                print(f"{Cores.AMARELO}⚠️  Você já jogou aí!{Cores.RESET}")
+                print("⚠️  Você já jogou aí!")
                 continue
             
             # Fazer jogada
@@ -84,22 +82,22 @@ def main():
             mostrar_titulo()
             
             if tabuleiro[linha][coluna] == 'N':
-                print(f"\n{Cores.VERMELHO}🎯 BOOOOM! DIRECT HIT!{Cores.RESET}")
-                print(f"{Cores.VERDE}⭐ MISSÃO CUMPRIDA!{Cores.RESET}")
+                print("\n🎯 BOOOOM! DIRECT HIT!")
+                print("⭐ MISSÃO CUMPRIDA!")
                 tabuleiro[linha][coluna] = 'X'
                 mostrar_tabuleiro(tabuleiro, revelar_navios=True)
                 break
             else:
-                print(f"\n{Cores.AZUL}💦 SPLASH! Água...{Cores.RESET}")
+                print("\n💦 SPLASH! Água...")
                 tabuleiro[linha][coluna] = 'O'
                 mostrar_tabuleiro(tabuleiro)
-                print(f"{Cores.AMARELO}💡 Tente B2 para acertar!{Cores.RESET}")
+                print("💡 Tente B2 para acertar!")
                 
         except Exception as e:
-            print(f"{Cores.VERMELHO}❌ Erro: {e}{Cores.RESET}")
+            print(f"❌ Erro: Use formato como A1, B2, etc")
     
-    print(f"\n{Cores.CYAN}🎉 Obrigado por jogar!{Cores.RESET}")
-    print(f"{Cores.AMARELO}📺 Sega Mega Drive vibes!{Cores.RESET}")
+    print("\n🎉 Obrigado por jogar!")
+    print("📺 Sega Mega Drive vibes!")
 
 if __name__ == "__main__":
     main()
