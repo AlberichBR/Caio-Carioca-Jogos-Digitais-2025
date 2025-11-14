@@ -1,0 +1,41 @@
+# BATALHA NAVAL SUPER SIMPLES
+print("=== BATALHA NAVAL ===")
+print("Encontre o navio escondido!")
+
+# Tabuleiro 3x3 com um navio em B2
+tabuleiro = [
+    ['~', '~', '~'],
+    ['~', 'N', '~'], 
+    ['~', '~', '~']
+]
+
+# Mostrar tabuleiro
+print("\n  1 2 3")
+print("A " + " ".join(tabuleiro[0]))
+print("B " + " ".join(tabuleiro[1])) 
+print("C " + " ".join(tabuleiro[2]))
+
+# Jogador tenta adivinhar
+jogada = input("\nOnde atirar? (A1, B2, C3): ").upper()
+
+# Verificar se acertou
+if jogada == "B2":
+    print("🎯 ACERTOU! Navio afundado!")
+    tabuleiro[1][1] = 'X'
+else:
+    print("💦 ERROU! É água...")
+    if jogada == "A1": tabuleiro[0][0] = 'O'
+    if jogada == "A2": tabuleiro[0][1] = 'O' 
+    if jogada == "A3": tabuleiro[0][2] = 'O'
+    if jogada == "B1": tabuleiro[1][0] = 'O'
+    if jogada == "B3": tabuleiro[1][2] = 'O'
+    if jogada == "C1": tabuleiro[2][0] = 'O'
+    if jogada == "C2": tabuleiro[2][1] = 'O'
+    if jogada == "C3": tabuleiro[2][2] = 'O'
+
+# Mostrar resultado
+print("\n  1 2 3")
+print("A " + " ".join(tabuleiro[0]))
+print("B " + " ".join(tabuleiro[1]))
+print("C " + " ".join(tabuleiro[2]))
+print("\n=== FIM ===")
